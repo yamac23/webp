@@ -40,3 +40,32 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+/* Raporlar Bölümü İçin Stiller */
+#raporlar {
+    border: 1px solid #007BFF; /* Mavi bir çerçeve ekleniyor */
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px; /* Kenarları yuvarlatılmış */
+    background-color: #f9f9f9; /* Açık gri arka plan */
+}
+
+#raporlar h2 {
+    color: #007BFF; /* Başlık rengi mavi */
+}
+
+#raporlar form {
+    margin-top: 10px;
+}
+
+#raporlar input[type="file"] {
+    margin-right: 10px;
+}
+
+#reports-list {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc; /* Açık gri çerçeve */
+    border-radius: 5px; /* Kenarları yuvarlatılmış */
+    background-color: #fff; /* Beyaz arka plan */
+}
