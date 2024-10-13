@@ -13,6 +13,7 @@
             <ul>
                 <li><a href="#hakkinda">Hakkında</a></li>
                 <li><a href="#iletisim">İletişim</a></li>
+                <li><a href="#raporlar">Raporlar</a></li> <!-- Raporlar bağlantısı eklendi -->
             </ul>
         </nav>
     </header>
@@ -24,6 +25,17 @@
         <section id="iletisim">
             <h2>İletişim</h2>
             <p>Email: example@example.com</p>
+        </section>
+        <section id="raporlar">
+            <h2>Raporlar</h2>
+            <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
+                <label for="report">Rapor Yükle:</label>
+                <input type="file" id="report" name="report" accept=".pdf,.doc,.docx,.ppt,.pptx" required>
+                <button type="submit">Yükle</button>
+            </form>
+            <div id="reports-list">
+                <!-- Buraya yüklenen raporların listesi gelecek -->
+            </div>
         </section>
     </main>
     <footer>
