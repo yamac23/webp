@@ -3,110 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cleanstreets</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Dosya Yükleme ve Görüntüleme</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <header>
-        <div class="logo">Cleanstreets</div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#hakkinda">Hakkında</a></li>
-                <li><a href="#iletisim">İletişim</a></li>
-                <li><a href="#yukleme">Dosya Yükleme</a></li>
-                <li><a href="#dosyalari-goruntule">Dosyaları Görüntüle</a></li>
-            </ul>
-            <div class="hamburger-menu">☰</div>
-        </nav>
-    </header>
+    <h1>Dosya Yükleme ve Görüntüleme</h1>
 
-    <main>
-        <section id="intro">
-            <h1>Hoş Geldiniz!</h1>
-            <p>Cleanstreets, şehir temizliğini akıllı çözümlerle iyileştirmeyi hedefleyen bir projedir.</p>
-        </section>
+    <!-- Dosya yükleme widget'ı -->
+    <button id="upload_widget_opener">Dosya Yükle</button>
 
-        <section id="hakkinda">
-            <h2>Hakkında</h2>
-            <p>CMPE491 Senior Project Design kapsamında geliştirilen Cleanstreets projesi, akıllı çöp yönetim sistemleri ile şehir temizliğini optimize etmeyi amaçlamaktadır.</p>
-        </section>
+    <!-- Yükleme sonrası bilgilendirme -->
+    <section id="file-info"></section>
 
-        <section id="yukleme">
-            <h2>Dosya Yükleme</h2>
-            <input type="file" id="file-input" />
-            <button id="upload-button" class="button">Dosya Yükle</button>
-            <p id="file-info"></p>
-        </section>
-
-        <section id="dosyalari-goruntule">
-            <h2>Yüklenen Dosyaları Görüntüle</h2>
-            <ul id="file-list"></ul>
-        </section>
-
-        <section id="iletisim">
-            <h2>İletişim</h2>
-            <p><strong>Email:</strong> Yılmaz Yamaç URKAN - yyamac.urkan@tedu.edu.tr</p>
-            <p><strong>Email:</strong> Berke Gündüz - berke.gunduz@tedu.edu.tr</p>
-            <p><strong>Email:</strong> Mert Çağlar Sanal - mert.sanal@tedu.edu.tr</p>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Cleanstreets - Tüm Hakları Saklıdır.</p>
-    </footer>
+    <!-- Yüklenen dosyaların listeleneceği alan -->
+    <section id="dosyalari-goruntule">
+        <h2>Yüklenen Dosyaları Görüntüle</h2>
+        <ul id="file-list"></ul>
+    </section>
 
     <script>
-        const cloudName = 'dwnyfntvd';  // CloudName'ınızı buraya yazın
-const uploadPreset = 'upload';  // Upload preset değerini doğru şekilde yazın
+        // Dosya yükleme işlevi
+        function handleFileUpload(file) {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "upload");  // Cloudinary upload preset adınız
+            formData.append("cloud_name", "dwnyfntvd");
 
-// Dosya seçimi işlemi
-const fileInput = document.getElementById('file-input');  // Dosya input elementinin id'si
+            axios.post("https://api.cloudinary.com/v1_1/dwnyfntvd/upload", formData)
+                .then((response) => {
+                    const fileUrl = response.data.secure_url;
+                    document.getElementById("file-info").innerHTML = `
+                        Dosya başarıyla yüklendi! 
+                        Dosya URL'si: <a href="${fileUrl}" target="_blank">${fileUrl}</a>
+                    `;
 
-fileInput.addEventListener('change', function(event) {
-    const file = event.target.files[0];  // İlk dosyayı alıyoruz
+                    // Yüklenen dosya URL'sini localStorage'a kaydet
+                    saveFileToLocalStorage(fileUrl);
+                })
+                .catch((error) => {
+                    console.error("Dosya yüklenirken hata oluştu:", error);
+                });
+        }
 
-    if (!file) {
-        alert("Lütfen bir dosya seçin.");
-        return;
-    }
+        // Yüklenen dosyaları localStorage'a kaydet
+        function saveFileToLocalStorage(fileUrl) {
+            let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles")) || [];
+            uploadedFiles.push(fileUrl);
+            localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+            displayUploadedFiles(); // Dosyaları tekrar göster
+        }
 
-    const formData = new FormData();
-    formData.append('file', file);  // Dosyayı FormData'ya ekle
-    formData.append('upload_preset', uploadPreset);  // Upload preset değerini ekle
+        // Sayfa yüklendiğinde localStorage'tan dosyaları göster
+        function displayUploadedFiles() {
+            let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles")) || [];
+            const fileListElement = document.getElementById("file-list");
+            fileListElement.innerHTML = ""; // Önceki listeyi temizle
 
-    // Axios ile API'ye yükleme işlemi
-    axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, formData)
-        .then(response => {
-            const fileUrl = response.data.secure_url; // Yüklenen dosyanın URL'si
+            uploadedFiles.forEach(fileUrl => {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `<a href="${fileUrl}" target="_blank">Yüklenen Dosya: ${fileUrl}</a>`;
+                fileListElement.appendChild(listItem);
+            });
+        }
 
-            // Dosya bilgilerini ekrana yazdır
-            document.getElementById('file-info').innerHTML = `
-                Dosya başarıyla yüklendi!
-                Dosya URL'si: <a href="${fileUrl}" target="_blank">${fileUrl}</a>
-            `;
+        // Sayfa yüklendiğinde yüklenen dosyaları göster
+        window.onload = function() {
+            displayUploadedFiles(); // Sayfa açıldığında dosyaları görüntüle
+        };
 
-            // Yüklenen dosyayı listeye ekle
-            const fileList = document.getElementById('file-list');
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${fileUrl}" target="_blank">Yüklenen Dosya: ${file.name}</a>`;
-            fileList.appendChild(listItem);
-        })
-        .catch(error => {
-            console.error('Hata:', error);
-            if (error.response) {
-                // API hatasından gelen mesajı göster
-                console.log('Yanıt:', error.response.data);
-                alert('Cloudinary API hatası: ' + error.response.data.error.message);
-            } else if (error.request) {
-                console.log('İstek hatası:', error.request);
-                alert('Sunucuya bağlantı sağlanamadı.');
+        // Dosya yükleme butonuna tıklanırsa
+        document.getElementById("upload_widget_opener").addEventListener("click", function () {
+            if (typeof cloudinary !== 'undefined') {
+                myWidget.open();
             } else {
-                console.log('Hata mesajı:', error.message);
-                alert('Dosya yüklenirken bir hata oluştu.');
+                console.log("Cloudinary widget is not loaded correctly.");
             }
         });
-});
+
+        // Cloudinary widget başlatma ve dosya yükleme
+        var myWidget = cloudinary.createUploadWidget({
+            cloudName: 'dwnyfntvd', 
+            uploadPreset: 'upload', 
+            sources: ['local', 'url', 'camera', 'image_search'],
+            showAdvancedOptions: true,
+            cropping: true,
+            multiple: false
+        }, (error, result) => {
+            if (result && result.event === "success") {
+                handleFileUpload(result.info.files[0].file);
+            }
+        });
     </script>
 </body>
 </html>
