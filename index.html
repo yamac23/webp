@@ -74,7 +74,7 @@
             formData.append('upload_preset', uploadPreset);
 
             // Axios ile Cloudinary'ye POST isteği gönder
-            axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, formData)
+            axios.post(`https://api.cloudinary.com/v1_1/${dwnyfntvd}/upload`, formData)
                 .then(response => {
                     const fileUrl = response.data.secure_url; // Yüklenen dosyanın URL'si
 
