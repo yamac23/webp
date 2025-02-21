@@ -3,51 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cleanstreets - File Upload</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.35.0/dist/supabase.js"></script>
+    <title>File Upload to Cloudinary</title>
+    <!-- Cloudinary JS SDK -->
+    <script src="https://upload.widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 </head>
 <body>
-    <header>
-        <div class="logo">Cleanstreets</div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#upload">File Upload</a></li>
-                <li><a href="#view-files">View Files</a></li>
-            </ul>
-        </nav>
-    </header>
+    <h1>Upload Files to Cloudinary</h1>
+    
+    <!-- Upload Button -->
+    <button id="upload_widget_opener">Upload File</button>
+    
+    <p id="file-info"></p> <!-- To display file info after successful upload -->
 
-    <main>
-        <section id="intro">
-            <h1>Welcome!</h1>
-            <p>Cleanstreets project allows you to upload files and view uploaded files.</p>
-        </section>
+    <script type="text/javascript">
+        // Cloudinary widget ayarları
+        var myWidget = cloudinary.createUploadWidget({
+            cloudName: 'your-cloud-name', // Cloudinary hesabınızda bulduğunuz Cloud Name
+            uploadPreset: 'your-upload-preset', // Cloudinary panelinden oluşturduğunuz Upload Preset
+            sources: ['local', 'url'], // Dosyayı yerel dosya sisteminden veya URL'den yükleme
+            resourceType: 'auto', // 'auto' ile .pdf, .docx gibi dosya türlerini kabul edebilirsiniz
+            multiple: false // Tek bir dosya yüklenmesine izin ver
+        }, (error, result) => { 
+            if (!error && result && result.event === "success") {
+                // Yükleme başarılıysa
+                document.getElementById("file-info").innerHTML = `
+                    File uploaded successfully!
+                    File URL: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>
+                `;
+            }
+        });
 
-        <section id="upload">
-            <h2>File Upload</h2>
-            <input type="file" id="fileInput" />
-            <button onclick="uploadFile()">Upload File</button>
-            <p id="status"></p>
-        </section>
-
-        <section id="view-files">
-            <h2>View Uploaded Files</h2>
-            <ul id="fileList"></ul>
-        </section>
-
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Email: example@domain.com</p>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Cleanstreets - All Rights Reserved.</p>
-    </footer>
-
-    <script src="app.js"></script>
+        // Upload butonuna tıklanınca widget'ı açma
+        document.getElementById("upload_widget_opener").addEventListener("click", function () {
+            myWidget.open();
+        });
+    </script>
 </body>
 </html>
