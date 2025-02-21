@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleanstreets</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
@@ -35,13 +34,14 @@
 
         <section id="yukleme">
             <h2>Dosya Yükleme</h2>
-            <input type="file" id="file-input" class="button" />
-            <p id="file-info"></p> <!-- Yüklenen dosyanın URL'si burada gösterilecek -->
+            <input type="file" id="file-input" />
+            <button id="upload-button" class="button">Dosya Yükle</button>
+            <p id="file-info"></p>
         </section>
 
         <section id="dosyalari-goruntule">
             <h2>Yüklenen Dosyaları Görüntüle</h2>
-            <ul id="file-list"></ul> <!-- Burada yüklenen dosyaların bağlantılarını göstereceğiz -->
+            <ul id="file-list"></ul>
         </section>
 
         <section id="iletisim">
@@ -57,12 +57,11 @@
     </footer>
 
     <script>
-        // Cloudinary API'ye dosya yüklemek için Axios kullanma
         const cloudName = 'dwnyfntvd'; // Cloudinary Cloud Name
-        const uploadPreset = 'upload'; // Upload preset (Cloudinary'de oluşturduğunuz yükleme ayarı)
 
-        document.getElementById('file-input').addEventListener('change', function(event) {
-            const file = event.target.files[0];
+        document.getElementById('upload-button').addEventListener('click', function () {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
             if (!file) {
                 alert("Lütfen bir dosya seçin.");
                 return;
@@ -71,10 +70,10 @@
             // FormData ile dosya verisini hazırla
             const formData = new FormData();
             formData.append('file', file);
-            formData.append('upload_preset', uploadPreset);
+            formData.append('upload_preset', 'upload'); // Upload preset
 
             // Axios ile Cloudinary'ye POST isteği gönder
-            axios.post(`https://api.cloudinary.com/v1_1/${dwnyfntvd}/upload`, formData)
+            axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, formData)
                 .then(response => {
                     const fileUrl = response.data.secure_url; // Yüklenen dosyanın URL'si
 
@@ -92,7 +91,16 @@
                 })
                 .catch(error => {
                     console.error('Hata:', error);
-                    alert('Dosya yüklenirken bir hata oluştu.');
+                    if (error.response) {
+                        console.log('Yanıt:', error.response.data); // Cloudinary hata mesajları
+                        alert('Cloudinary API hatası: ' + error.response.data.error.message);
+                    } else if (error.request) {
+                        console.log('İstek hatası:', error.request);
+                        alert('Sunucuya bağlantı sağlanamadı.');
+                    } else {
+                        console.log('Hata mesajı:', error.message);
+                        alert('Dosya yüklenirken bir hata oluştu.');
+                    }
                 });
         });
     </script>
