@@ -57,38 +57,39 @@
     </footer>
 
     <script>
-        window.onload = function() {
-            var myWidget = cloudinary.createUploadWidget({
-                cloudName: 'dwnyfntvd', // Cloudinary hesabınızda bulduğunuz Cloud Name
-                uploadPreset: 'upload', // Cloudinary panelinden oluşturduğunuz Upload Preset
-                sources: ['local', 'url'], // Dosyayı yerel dosya sisteminden veya URL'den yükleme
-                resourceType: 'raw', // 'raw' ile .pdf, .docx gibi dosya türlerini kabul edebilirsiniz
-                multiple: true // Tek bir dosya yüklenmesine izin ver
-            }, (error, result) => { 
-                if (!error && result && result.event === "success") {
-                    // Dosya başarıyla yüklendiyse, URL'yi göster
-                    document.getElementById("file-info").innerHTML = `Dosya başarıyla yüklendi! Dosya URL'si: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>`;
+        window.addEventListener("load", function() {
+            // Cloudinary script'in yüklendiğinden emin olalım
+            if (typeof cloudinary !== 'undefined') {
+                var myWidget = cloudinary.createUploadWidget({
+                    cloudName: 'dwnyfntvd', // Cloudinary hesabınızda bulduğunuz Cloud Name
+                    uploadPreset: 'upload', // Cloudinary panelinden oluşturduğunuz Upload Preset
+                    sources: ['local', 'url'], // Dosyayı yerel dosya sisteminden veya URL'den yükleme
+                    resourceType: 'raw', // 'raw' ile .pdf, .docx gibi dosya türlerini kabul edebilirsiniz
+                    multiple: true // Tek bir dosya yüklenmesine izin ver
+                }, (error, result) => { 
+                    if (!error && result && result.event === "success") {
+                        // Dosya başarıyla yüklendiyse, URL'yi göster
+                        document.getElementById("file-info").innerHTML = `Dosya başarıyla yüklendi! Dosya URL'si: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>`;
 
-                    // Yüklenen dosyayı listeye ekle
-                    let fileList = document.getElementById("file-list");
-                    let listItem = document.createElement("li");
-                    listItem.innerHTML = `<a href="${result.info.secure_url}" target="_blank">Yüklenen Dosya: ${result.info.original_filename}</a>`;
-                    fileList.appendChild(listItem);
-                } else if (error) {
-                    console.error("Hata: ", error);
-                }
-            });
+                        // Yüklenen dosyayı listeye ekle
+                        let fileList = document.getElementById("file-list");
+                        let listItem = document.createElement("li");
+                        listItem.innerHTML = `<a href="${result.info.secure_url}" target="_blank">Yüklenen Dosya: ${result.info.original_filename}</a>`;
+                        fileList.appendChild(listItem);
+                    } else if (error) {
+                        console.error("Hata: ", error);
+                    }
+                });
 
-            // Upload butonuna tıklanınca widget'ı açma
-            document.getElementById("upload_widget_opener").addEventListener("click", function () {
-                console.log("Upload button clicked!");
-                if (typeof cloudinary !== 'undefined') {
+                // Upload butonuna tıklanınca widget'ı açma
+                document.getElementById("upload_widget_opener").addEventListener("click", function () {
+                    console.log("Upload button clicked!");
                     myWidget.open();
-                } else {
-                    console.log("Cloudinary widget is not loaded correctly.");
-                }
-            });
-        };
+                });
+            } else {
+                console.error("Cloudinary SDK is not loaded correctly.");
+            }
+        });
     </script>
 </body>
 </html>
