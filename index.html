@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleanstreets</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Cloudinary JS SDK -->
     <script src="https://upload.widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 </head>
 <body>
@@ -26,7 +27,7 @@
             <h1>Hoş Geldiniz!</h1>
             <p>Cleanstreets, şehir temizliğini akıllı çözümlerle iyileştirmeyi hedefleyen bir projedir.</p>
         </section>
-        
+
         <section id="hakkinda">
             <h2>Hakkında</h2>
             <p>CMPE491 Senior Project Design kapsamında geliştirilen Cleanstreets projesi, akıllı çöp yönetim sistemleri ile şehir temizliğini optimize etmeyi amaçlamaktadır.</p>
@@ -34,7 +35,6 @@
 
         <section id="yukleme">
             <h2>Dosya Yükleme</h2>
-            <!-- Dosya yüklemek için Cloudinary widget'ını açan buton -->
             <button id="upload_widget_opener" class="button">Dosya Yükle</button>
             <p id="file-info"></p> <!-- Yüklenen dosyanın URL'si burada gösterilecek -->
         </section>
@@ -51,11 +51,11 @@
             <p><strong>Email:</strong> Mert Çağlar Sanal - mert.sanal@tedu.edu.tr</p>
         </section>
     </main>
-    
+
     <footer>
         <p>&copy; 2025 Cleanstreets - Tüm Hakları Saklıdır.</p>
     </footer>
-    
+
     <script>
         document.querySelector(".hamburger-menu").addEventListener("click", function() {
             document.querySelector(".nav-links").classList.toggle("active");
@@ -74,6 +74,8 @@
                     Dosya başarıyla yüklendi!
                     Dosya URL'si: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>
                 `;
+            } else if (error) {
+                console.error("Hata: ", error);
             }
         });
 
