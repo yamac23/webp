@@ -1,44 +1,39 @@
-/* Genel Stil */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    line-height: 1.6;
     margin: 0;
     padding: 0;
-    text-align: center;
-}
-
-.container {
-    padding: 20px;
+    background-color: #f4f4f4;
 }
 
 h1 {
-    color: #333;
-    font-size: 2rem;
+    text-align: center;
+    margin-top: 20px;
 }
 
-/* Buton Stili */
-.upload-button {
-    padding: 10px 20px;
+button {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    padding: 10px;
     background-color: #007BFF;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 16px;
 }
 
-.upload-button:hover {
+button:hover {
     background-color: #0056b3;
 }
 
-/* Dosya Bilgisi */
-.file-info {
+#file-info {
+    text-align: center;
+    font-size: 14px;
     margin-top: 20px;
-    font-size: 1.1rem;
-    color: #333;
 }
 
-.file-info a {
+a {
     color: #007BFF;
-    text-decoration: none;
 }
