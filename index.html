@@ -1,40 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Files to Cloudinary</title>
-    <!-- Cloudinary JS SDK -->
-    <script src="https://upload.widget.cloudinary.com/global/all.js" type="text/javascript"></script>
-    
-    <!-- Link to External CSS -->
-    <link rel="stylesheet" href="styles.css"> <!-- Buradaki yolu kontrol edin -->
+    <title>Cleanstreets</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <script src="https://upload.widget.cloudinary.com/global/all.js" type="text/javascript"></script> <!-- Cloudinary JS SDK -->
 </head>
 <body>
-    <h1>Upload PDF or DOCX Files to Cloudinary</h1>
+    <header>
+        <div class="logo">Cleanstreets</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#hakkinda">Hakkında</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
+                <li><a href="#yukleme">Dosya Yükleme</a></li>
+                <li><a href="#dosyalari-goruntule">Dosyaları Görüntüle</a></li>
+            </ul>
+            <div class="hamburger-menu">☰</div>
+        </nav>
+    </header>
     
-    <!-- Upload Button -->
-    <button id="upload_widget_opener">Upload File</button>
-    
-    <p id="file-info"></p> <!-- Yükleme sonrası dosya bilgilerini burada göstereceğiz -->
+    <main>
+        <section id="intro">
+            <h1>Hoş Geldiniz!</h1>
+            <p>Cleanstreets, şehir temizliğini akıllı çözümlerle iyileştirmeyi hedefleyen bir projedir.</p>
+        </section>
+        
+        <section id="hakkinda">
+            <h2>Hakkında</h2>
+            <p>CMPE491 Senior Project Design kapsamında geliştirilen Cleanstreets projesi, akıllı çöp yönetim sistemleri ile şehir temizliğini optimize etmeyi amaçlamaktadır.</p>
+        </section>
 
-    <script type="text/javascript">
-        // Cloudinary widget ayarları
+        <section id="yukleme">
+            <h2>Dosya Yükleme</h2>
+            <button id="upload_widget_opener" class="button">Dosya Yükle</button>
+            <p id="file-info"></p> <!-- Yüklenen dosya bilgilerini gösterecek alan -->
+        </section>
+
+        <section id="dosyalari-goruntule">
+            <h2>Yüklenen Dosyaları Görüntüle</h2>
+            <a class="button" href="https://drive.google.com/drive/folders/1hA2bDK5v1SvwSUjOEl3rpTZKvuNenyveBuLZ8Mvob4vqHObSXfZZW91nLs4n3H0QQ6u07SmR" target="_blank">Dosyaları Görüntüle</a>
+        </section>
+
+        <section id="iletisim">
+            <h2>İletişim</h2>
+            <p><strong>Email:</strong> Yılmaz Yamaç URKAN - yyamac.urkan@tedu.edu.tr</p>
+            <p><strong>Email:</strong> Berke Gündüz - berke.gunduz@tedu.edu.tr</p>
+            <p><strong>Email:</strong> Mert Çağlar Sanal - mert.sanal@tedu.edu.tr</p>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Cleanstreets - Tüm Hakları Saklıdır.</p>
+    </footer>
+    
+    <script>
+        document.querySelector(".hamburger-menu").addEventListener("click", function() {
+            document.querySelector(".nav-links").classList.toggle("active");
+        });
+
+        // Cloudinary Widget ayarları
         var myWidget = cloudinary.createUploadWidget({
-            cloudName: 'dwnyfntvd', // Cloudinary hesabınızda bulduğunuz Cloud Name
-            uploadPreset: 'upload', // Cloudinary panelinden oluşturduğunuz Upload Preset
-            sources: ['local', 'url'], // Dosyayı yerel dosya sisteminden veya URL'den yükleme
-            resourceType: 'raw', // .pdf ve .docx gibi dosya türleri
-            multiple: false // Sadece bir dosya yüklemesine izin verir
+            cloudName: 'dwnyfntvd', // Cloudinary Cloud Name
+            uploadPreset: 'upload', // Cloudinary Upload Preset
+            sources: ['local'], // Yerel dosya yüklemesi
+            resourceType: 'raw', // .pdf, .docx gibi dosya türleri
+            multiple: false // Tek dosya yüklenmesine izin ver
         }, (error, result) => { 
             if (!error && result && result.event === "success") {
-                document.getElementById("file-info").innerHTML = `File uploaded successfully! File URL: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>`;
+                document.getElementById("file-info").innerHTML = `
+                    Yükleme başarılı!
+                    Dosya URL'si: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>
+                `;
             }
         });
 
         // Upload butonuna tıklayınca widget'ı açma
         document.getElementById("upload_widget_opener").addEventListener("click", function () {
-            myWidget.open(); // Yükleme widget'ını aç
+            myWidget.open();
         });
     </script>
 </body>
