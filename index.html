@@ -67,7 +67,7 @@
             uploadPreset: 'upload', // Cloudinary panelinden oluşturduğunuz Upload Preset
             sources: ['local', 'url'], // Dosyayı yerel dosya sisteminden veya URL'den yükleme
             resourceType: 'raw', // 'raw' ile .pdf, .docx gibi dosya türlerini kabul edebilirsiniz
-            multiple: false // Tek bir dosya yüklenmesine izin ver
+            multiple: true // Tek bir dosya yüklenmesine izin ver
         }, (error, result) => { 
             if (!error && result && result.event === "success") {
                 // Dosya başarıyla yüklendiyse, URL'yi göster
@@ -88,8 +88,12 @@
 
         // Upload butonuna tıklanınca widget'ı açma
         document.getElementById("upload_widget_opener").addEventListener("click", function () {
-            myWidget.open();
-        });
+    if (typeof cloudinary !== 'undefined') {
+        myWidget.open();
+    } else {
+        console.log("Cloudinary widget is not loaded correctly.");
+    }
+});
     </script>
 </body>
 </html>
