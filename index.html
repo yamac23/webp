@@ -6,19 +6,17 @@
     <title>Upload Files to Cloudinary</title>
     <!-- Cloudinary JS SDK -->
     <script src="https://upload.widget.cloudinary.com/global/all.js" type="text/javascript"></script>
-
+    
     <!-- Link to External CSS -->
-    <link rel="stylesheet" href="styles.css"> <!-- Burada CSS dosyanızın doğru yolunu kullandığınızdan emin olun -->
+    <link rel="stylesheet" href="styles.css"> <!-- Buradaki yolu kontrol edin -->
 </head>
 <body>
-    <div class="container">
-        <h1>Upload PDF or DOCX Files to Cloudinary</h1>
-        
-        <!-- Upload Button -->
-        <button id="upload_widget_opener" class="upload-button">Upload File</button>
-        
-        <p id="file-info" class="file-info"></p> <!-- To display file info after successful upload -->
-    </div>
+    <h1>Upload PDF or DOCX Files to Cloudinary</h1>
+    
+    <!-- Upload Button -->
+    <button id="upload_widget_opener">Upload File</button>
+    
+    <p id="file-info"></p> <!-- Yükleme sonrası dosya bilgilerini burada göstereceğiz -->
 
     <script type="text/javascript">
         // Cloudinary widget ayarları
@@ -26,21 +24,17 @@
             cloudName: 'dwnyfntvd', // Cloudinary hesabınızda bulduğunuz Cloud Name
             uploadPreset: 'upload', // Cloudinary panelinden oluşturduğunuz Upload Preset
             sources: ['local', 'url'], // Dosyayı yerel dosya sisteminden veya URL'den yükleme
-            resourceType: 'raw', // 'raw' ile .pdf, .docx gibi dosya türlerini kabul edebilirsiniz
-            multiple: false // Tek bir dosya yüklenmesine izin ver
+            resourceType: 'raw', // .pdf ve .docx gibi dosya türleri
+            multiple: false // Sadece bir dosya yüklemesine izin verir
         }, (error, result) => { 
             if (!error && result && result.event === "success") {
-                // Yükleme başarılıysa
-                document.getElementById("file-info").innerHTML = `
-                    File uploaded successfully!
-                    File URL: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>
-                `;
+                document.getElementById("file-info").innerHTML = `File uploaded successfully! File URL: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>`;
             }
         });
 
-        // Upload butonuna tıklanınca widget'ı açma
+        // Upload butonuna tıklayınca widget'ı açma
         document.getElementById("upload_widget_opener").addEventListener("click", function () {
-            myWidget.open();
+            myWidget.open(); // Yükleme widget'ını aç
         });
     </script>
 </body>
