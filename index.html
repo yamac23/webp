@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleanstreets</title>
-    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="styles.css">
     <script src="https://upload.widget.cloudinary.com/global/all.js" type="text/javascript"></script> <!-- Cloudinary JS SDK -->
 </head>
 <body>
@@ -20,7 +20,7 @@
             <div class="hamburger-menu">☰</div>
         </nav>
     </header>
-    
+
     <main>
         <section id="intro">
             <h1>Hoş Geldiniz!</h1>
@@ -34,8 +34,9 @@
 
         <section id="yukleme">
             <h2>Dosya Yükleme</h2>
+            <!-- Dosya yüklemek için Cloudinary widget'ını açan buton -->
             <button id="upload_widget_opener" class="button">Dosya Yükle</button>
-            <p id="file-info"></p> <!-- Yüklenen dosya bilgilerini gösterecek alan -->
+            <p id="file-info"></p> <!-- Yüklenen dosyanın URL'si burada gösterilecek -->
         </section>
 
         <section id="dosyalari-goruntule">
@@ -60,23 +61,23 @@
             document.querySelector(".nav-links").classList.toggle("active");
         });
 
-        // Cloudinary Widget ayarları
+        // Cloudinary widget ayarları
         var myWidget = cloudinary.createUploadWidget({
-            cloudName: 'dwnyfntvd', // Cloudinary Cloud Name
-            uploadPreset: 'upload', // Cloudinary Upload Preset
-            sources: ['local'], // Yerel dosya yüklemesi
-            resourceType: 'raw', // .pdf, .docx gibi dosya türleri
-            multiple: false // Tek dosya yüklenmesine izin ver
+            cloudName: 'dwnyfntvd', // Cloudinary hesabınızda bulduğunuz Cloud Name
+            uploadPreset: 'upload', // Cloudinary panelinden oluşturduğunuz Upload Preset
+            sources: ['local', 'url'], // Dosyayı yerel dosya sisteminden veya URL'den yükleme
+            resourceType: 'raw', // 'raw' ile .pdf, .docx gibi dosya türlerini kabul edebilirsiniz
+            multiple: false // Tek bir dosya yüklenmesine izin ver
         }, (error, result) => { 
             if (!error && result && result.event === "success") {
                 document.getElementById("file-info").innerHTML = `
-                    Yükleme başarılı!
+                    Dosya başarıyla yüklendi!
                     Dosya URL'si: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>
                 `;
             }
         });
 
-        // Upload butonuna tıklayınca widget'ı açma
+        // Upload butonuna tıklanınca widget'ı açma
         document.getElementById("upload_widget_opener").addEventListener("click", function () {
             myWidget.open();
         });
