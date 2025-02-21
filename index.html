@@ -1,63 +1,53 @@
 <!DOCTYPE html>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cleanstreets</title>
-    <link rel="stylesheet" href="styles.css"> 
+    <title>Cleanstreets - File Upload</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.35.0/dist/supabase.js"></script>
 </head>
 <body>
     <header>
         <div class="logo">Cleanstreets</div>
         <nav>
             <ul class="nav-links">
-                <li><a href="#hakkinda">Hakkında</a></li>
-                <li><a href="#iletisim">İletişim</a></li>
-                <li><a href="#yukleme">Dosya Yükleme</a></li>
-                <li><a href="#dosyalari-goruntule">Dosyaları Görüntüle</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#upload">File Upload</a></li>
+                <li><a href="#view-files">View Files</a></li>
             </ul>
-            <div class="hamburger-menu">☰</div>
         </nav>
     </header>
-    
+
     <main>
         <section id="intro">
-            <h1>Hoş Geldiniz!</h1>
-            <p>Cleanstreets, şehir temizliğini akıllı çözümlerle iyileştirmeyi hedefleyen bir projedir.</p>
-        </section>
-        
-        <section id="hakkinda">
-            <h2>Hakkında</h2>
-            <p>CMPE491 Senior Project Design kapsamında geliştirilen Cleanstreets projesi, akıllı çöp yönetim sistemleri ile şehir temizliğini optimize etmeyi amaçlamaktadır.</p>
+            <h1>Welcome!</h1>
+            <p>Cleanstreets project allows you to upload files and view uploaded files.</p>
         </section>
 
-        <section id="yukleme">
-            <h2>Dosya Yükleme</h2>
-            <a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLSdWnn677cezYpZZiQL2l5ozgfb6974C1OrOO0JB9gs0wESG-Q/viewform?usp=sf_link" target="_blank">Dosya Yükle</a>
+        <section id="upload">
+            <h2>File Upload</h2>
+            <input type="file" id="fileInput" />
+            <button onclick="uploadFile()">Upload File</button>
+            <p id="status"></p>
         </section>
 
-        <section id="dosyalari-goruntule">
-            <h2>Yüklenen Dosyaları Görüntüle</h2>
-            <a class="button" href="https://drive.google.com/drive/folders/1hA2bDK5v1SvwSUjOEl3rpTZKvuNenyveBuLZ8Mvob4vqHObSXfZZW91nLs4n3H0QQ6u07SmR" target="_blank">Dosyaları Görüntüle</a>
+        <section id="view-files">
+            <h2>View Uploaded Files</h2>
+            <ul id="fileList"></ul>
         </section>
 
-        <section id="iletisim">
-            <h2>İletişim</h2>
-            <p><strong>Email:</strong> Yılmaz Yamaç URKAN - yyamac.urkan@tedu.edu.tr</p>
-            <p><strong>Email:</strong> Berke Gündüz - berke.gunduz@tedu.edu.tr</p>
-            <p><strong>Email:</strong> Mert Çağlar Sanal - mert.sanal@tedu.edu.tr</p>
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Email: example@domain.com</p>
         </section>
     </main>
-    
-    <footer>
-        <p>&copy; 2025 Cleanstreets - Tüm Hakları Saklıdır.</p>
-    </footer>
-    
-    <script>
-        document.querySelector(".hamburger-menu").addEventListener("click", function() {
-            document.querySelector(".nav-links").classList.toggle("active");
-        });
-    </script>
 
-    <style>
+    <footer>
+        <p>&copy; 2025 Cleanstreets - All Rights Reserved.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
