@@ -57,37 +57,47 @@
     </footer>
 
     <script>
-        window.addEventListener('load', function () {
-    // Cloudinary SDK'nın doğru yüklenip yüklenmediğini kontrol et
-    if (typeof cloudinary !== 'undefined') {
-        console.log('Cloudinary SDK yüklendi'); // Debug log
-
-        var myWidget = cloudinary.createUploadWidget({
-            cloudName: 'dwnyfntvd',  // Burada kendi Cloud Name'inizi yazın
-            uploadPreset: 'upload', 
-            sources: ['local', 'url'], 
-            resourceType: 'raw', 
-            multiple: true
-        }, (error, result) => { 
-            if (!error && result && result.event === "success") {
-                document.getElementById("file-info").innerHTML = `Dosya başarıyla yüklendi! Dosya URL'si: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>`;
-
-                let fileList = document.getElementById("file-list");
-                let listItem = document.createElement("li");
-                listItem.innerHTML = `<a href="${result.info.secure_url}" target="_blank">Yüklenen Dosya: ${result.info.original_filename}</a>`;
-                fileList.appendChild(listItem);
-            } else if (error) {
-                console.error("Hata: ", error);
+        // Cloudinary SDK'nın yüklendiğini kontrol et
+        window.onload = function() {
+            if (typeof cloudinary !== 'undefined') {
+                console.log('Cloudinary SDK yüklendi'); // Debug log
+            } else {
+                console.error("Cloudinary SDK yüklenmedi. Lütfen SDK'yı doğru şekilde entegre edin.");
             }
-        });
 
-        document.getElementById("upload_widget_opener").addEventListener("click", function () {
-            myWidget.open();
-        });
-    } else {
-        console.error("Cloudinary SDK yüklenmedi. Lütfen SDK'yı doğru şekilde entegre edin.");
-    }
-});
+            // Cloudinary widget ayarları
+            var myWidget = cloudinary.createUploadWidget({
+                cloudName: 'dwnyfntvd',  // Burada kendi Cloud Name'inizi yazın
+                uploadPreset: 'upload',
+                sources: ['local', 'url'],  // Dosyayı yerel dosya sisteminden veya URL'den yükleme
+                resourceType: 'raw',  // 'raw' ile .pdf, .docx gibi dosya türlerini kabul edebilirsiniz
+                multiple: true  // Tek bir dosya yüklenmesine izin ver
+            }, (error, result) => { 
+                if (!error && result && result.event === "success") {
+                    document.getElementById("file-info").innerHTML = `
+                        Dosya başarıyla yüklendi!
+                        Dosya URL'si: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>
+                    `;
+                    
+                    // Yüklenen dosyayı listeye ekle
+                    let fileList = document.getElementById("file-list");
+                    let listItem = document.createElement("li");
+                    listItem.innerHTML = `<a href="${result.info.secure_url}" target="_blank">Yüklenen Dosya: ${result.info.original_filename}</a>`;
+                    fileList.appendChild(listItem);
+                } else if (error) {
+                    console.error("Hata: ", error);
+                }
+            });
+
+            // Upload butonuna tıklanınca widget'ı açma
+            document.getElementById("upload_widget_opener").addEventListener("click", function () {
+                if (typeof cloudinary !== 'undefined') {
+                    myWidget.open();
+                } else {
+                    console.log("Cloudinary widget is not loaded correctly.");
+                }
+            });
+        };
     </script>
 </body>
 </html>
