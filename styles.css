@@ -1,89 +1,82 @@
- body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
 
-        header {
-            background: #007BFF;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+header {
+    background: #007BFF;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-        }
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+}
 
-        nav ul li {
-            margin-right: 15px;
-        }
+nav ul li {
+    margin-right: 15px;
+}
 
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-        .hamburger-menu {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-        }
+button {
+    padding: 10px 20px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #007BFF;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
+button:hover {
+    background: #0056b3;
+}
 
-        main {
-            padding: 20px;
-            text-align: center;
-        }
+input[type="file"] {
+    margin: 10px 0;
+}
 
-        footer {
-            text-align: center;
-            padding: 10px 0;
-            background: #007BFF;
-            color: white;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
+main {
+    padding: 20px;
+    text-align: center;
+}
 
-        @media screen and (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                background: #007BFF;
-                position: absolute;
-                top: 60px;
-                right: 0;
-                width: 100%;
-                text-align: center;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-            .hamburger-menu {
-                display: block;
-            }
-        }
-    </style>
-</body>
-</html>
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #007BFF;
+    color: white;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 10px 0;
+}
+
+#status {
+    font-weight: bold;
+}
