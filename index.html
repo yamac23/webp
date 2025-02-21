@@ -41,7 +41,7 @@
 
         <section id="dosyalari-goruntule">
             <h2>Yüklenen Dosyaları Görüntüle</h2>
-            <a class="button" href="https://drive.google.com/drive/folders/1hA2bDK5v1SvwSUjOEl3rpTZKvuNenyveBuLZ8Mvob4vqHObSXfZZW91nLs4n3H0QQ6u07SmR" target="_blank">Dosyaları Görüntüle</a>
+            <ul id="file-list"></ul> <!-- Burada yüklenen dosyaların bağlantılarını göstereceğiz -->
         </section>
 
         <section id="iletisim">
@@ -70,10 +70,17 @@
             multiple: false // Tek bir dosya yüklenmesine izin ver
         }, (error, result) => { 
             if (!error && result && result.event === "success") {
+                // Dosya başarıyla yüklendiyse, URL'yi göster
                 document.getElementById("file-info").innerHTML = `
                     Dosya başarıyla yüklendi!
                     Dosya URL'si: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>
                 `;
+
+                // Yüklenen dosyayı listeye ekle
+                let fileList = document.getElementById("file-list");
+                let listItem = document.createElement("li");
+                listItem.innerHTML = `<a href="${result.info.secure_url}" target="_blank">Yüklenen Dosya: ${result.info.original_filename}</a>`;
+                fileList.appendChild(listItem);
             } else if (error) {
                 console.error("Hata: ", error);
             }
