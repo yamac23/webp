@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleanstreets</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Cloudinary JS SDK -->
-    <script src="https://upload.widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <header>
@@ -35,7 +35,7 @@
 
         <section id="yukleme">
             <h2>Dosya Yükleme</h2>
-            <button id="upload_widget_opener" class="button">Dosya Yükle</button>
+            <input type="file" id="file-input" class="button" />
             <p id="file-info"></p> <!-- Yüklenen dosyanın URL'si burada gösterilecek -->
         </section>
 
@@ -57,47 +57,44 @@
     </footer>
 
     <script>
-        // Cloudinary SDK'nın yüklendiğini kontrol et
-        window.onload = function() {
-            if (typeof cloudinary !== 'undefined') {
-                console.log('Cloudinary SDK yüklendi'); // Debug log
-            } else {
-                console.error("Cloudinary SDK yüklenmedi. Lütfen SDK'yı doğru şekilde entegre edin.");
+        // Cloudinary API'ye dosya yüklemek için Axios kullanma
+        const cloudName = 'dwnyfntvd'; // Cloudinary Cloud Name
+        const uploadPreset = 'upload'; // Upload preset (Cloudinary'de oluşturduğunuz yükleme ayarı)
+
+        document.getElementById('file-input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                alert("Lütfen bir dosya seçin.");
+                return;
             }
 
-            // Cloudinary widget ayarları
-            var myWidget = cloudinary.createUploadWidget({
-                cloudName: 'dwnyfntvd',  // Burada kendi Cloud Name'inizi yazın
-                uploadPreset: 'upload',
-                sources: ['local', 'url'],  // Dosyayı yerel dosya sisteminden veya URL'den yükleme
-                resourceType: 'raw',  // 'raw' ile .pdf, .docx gibi dosya türlerini kabul edebilirsiniz
-                multiple: true  // Tek bir dosya yüklenmesine izin ver
-            }, (error, result) => { 
-                if (!error && result && result.event === "success") {
-                    document.getElementById("file-info").innerHTML = `
-                        Dosya başarıyla yüklendi!
-                        Dosya URL'si: <a href="${result.info.secure_url}" target="_blank">${result.info.secure_url}</a>
-                    `;
-                    
-                    // Yüklenen dosyayı listeye ekle
-                    let fileList = document.getElementById("file-list");
-                    let listItem = document.createElement("li");
-                    listItem.innerHTML = `<a href="${result.info.secure_url}" target="_blank">Yüklenen Dosya: ${result.info.original_filename}</a>`;
-                    fileList.appendChild(listItem);
-                } else if (error) {
-                    console.error("Hata: ", error);
-                }
-            });
+            // FormData ile dosya verisini hazırla
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', uploadPreset);
 
-            // Upload butonuna tıklanınca widget'ı açma
-            document.getElementById("upload_widget_opener").addEventListener("click", function () {
-                if (typeof cloudinary !== 'undefined') {
-                    myWidget.open();
-                } else {
-                    console.log("Cloudinary widget is not loaded correctly.");
-                }
-            });
-        };
+            // Axios ile Cloudinary'ye POST isteği gönder
+            axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, formData)
+                .then(response => {
+                    const fileUrl = response.data.secure_url; // Yüklenen dosyanın URL'si
+
+                    // Dosya bilgilerini göster
+                    document.getElementById('file-info').innerHTML = `
+                        Dosya başarıyla yüklendi!
+                        Dosya URL'si: <a href="${fileUrl}" target="_blank">${fileUrl}</a>
+                    `;
+
+                    // Yüklenen dosyayı listeye ekle
+                    const fileList = document.getElementById('file-list');
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<a href="${fileUrl}" target="_blank">Yüklenen Dosya: ${file.name}</a>`;
+                    fileList.appendChild(listItem);
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert('Dosya yüklenirken bir hata oluştu.');
+                });
+        });
     </script>
 </body>
 </html>
